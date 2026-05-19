@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Lesson1 from './lessons/Lesson1'
 import Lesson2 from './lessons/Lesson2'
+import Lesson3 from './lessons/Lesson3'
 
 const lessons = [
   { id: 1, title: "1. الإحداثيات والمستوى (Cartesian Plane)" },
@@ -28,6 +29,8 @@ function App() {
         return <Lesson1 />
       case 2:
         return <Lesson2 />
+      case 3:
+        return <Lesson3 />
       default:
         return (
           <div className="info-card">
