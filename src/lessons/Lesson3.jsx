@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 const Lesson3 = () => {
   const [angleDeg, setAngleDeg] = useState(45);
@@ -64,10 +64,6 @@ const Lesson3 = () => {
       pathD = `M ${originX + arcRadius} ${originY} A ${arcRadius} ${arcRadius} 0 1 0 ${originX - arcRadius} ${originY} A ${arcRadius} ${arcRadius} 0 1 0 ${originX + arcRadius} ${originY}`;
     }
   } else {
-    const normalizedAngle = ((angleDeg % 360) + 360) % 360; // 0 to 360
-    const largeArcFlag = normalizedAngle > 180 ? 1 : 0;
-    const sweepFlag = angleDeg > 0 ? 0 : 1; // SVG y-axis is inverted
-    
     // For negative angles, we draw from start to end, but the sweep direction changes
     let actualSweepFlag = angleDeg >= 0 ? 0 : 1;
     let actualLargeArcFlag = Math.abs(angleDeg) > 180 ? 1 : 0;
@@ -78,9 +74,15 @@ const Lesson3 = () => {
   return (
     <div className="lesson-container">
       <div className="lesson-header">
-        <h2>3. معنى الزاوية كدوران (Angle as Rotation)</h2>
-        <p>الزاوية ليست مجرد شكل هندسي جامد، بل هي <strong>حركة ودوران</strong>. تخيل أنك تقف في المركز وتنظر لليمين (محور x الموجب)، الزاوية هي مقدار دورانك من هذا الموضع.</p>
+        <span className="lesson-kicker">السؤال المركزي</span>
+        <h2>3. كيف نصف تغيّر الاتجاه، لا الموقع فقط؟</h2>
+        <p>نقطتان تحددان اتجاهًا نهائيًا، لكنهما لا تخبراننا كم دورة حدثت ولا في أي اتجاه. الزاوية الموجّهة تسجل الحركة نفسها.</p>
       </div>
+
+      <section className="story-grid">
+        <article className="story-card"><span className="story-step">المشكلة</span><h3>النهاية لا تروي الرحلة</h3><p>90° و450° تنتهيان في الاتجاه نفسه، لكن الثانية تحمل دورة إضافية.</p></article>
+        <article className="story-card"><span className="story-step">الاتفاق</span><h3>بداية واتجاه موجب</h3><p>نختار اليمين بداية، وعكس الساعة موجبًا. هذا اتفاق ثابت، لا قانون فيزيائي.</p></article>
+      </section>
 
       <div className="info-card">
         <strong>اتجاه الدوران:</strong>
@@ -91,6 +93,7 @@ const Lesson3 = () => {
         الزاوية الصفرية (0°) تعني عدم الدوران، بينما 360° تعني دورة كاملة والعودة لنفس نقطة البداية.
       </div>
 
+      <aside className="thought-prompt"><strong>تنبّأ:</strong> أي زاوية سالبة تنتهي في موضع 90° نفسه؟ ثم اختبر اتجاه الحركة.</aside>
       <div className="simulation-container">
         <h3>محاكاة تفاعلية: عجلة القيادة</h3>
         <p>استخدم شريط التمرير (Slider) لتغيير الزاوية ولاحظ كيف يدور الشعاع.</p>
@@ -185,7 +188,7 @@ const Lesson3 = () => {
                 {angleDeg === 180 && 'الزاوية 180: نصف دورة (نحو اليسار).'}
                 {angleDeg === 270 && 'الزاوية 270: ثلاثة أرباع دورة (للأسفل).'}
                 {angleDeg === 360 && 'الزاوية 360: دورة كاملة موجبة.'}
-                {angleDeg === -90 && 'الزاوية -90: ربع دورة للأسفل (عكس عقارب الساعة).'}
+                {angleDeg === -90 && 'الزاوية -90: ربع دورة للأسفل (مع عقارب الساعة).'}
               </p>
             </div>
             
@@ -236,6 +239,7 @@ const Lesson3 = () => {
           </details>
         </div>
       </div>
+      <aside className="bridge-card"><strong>السؤال التالي:</strong> إذا كبّرنا شعاعًا من دون تدويره، تتغير أطواله ولا يتغير اتجاهه. فما الكمية التي تحفظ الاتجاه؟</aside>
     </div>
   );
 };

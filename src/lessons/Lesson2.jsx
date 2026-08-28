@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 
 const Lesson2 = () => {
   const [point, setPoint] = useState({ x: 6, y: 8 });
@@ -82,9 +82,15 @@ const Lesson2 = () => {
   return (
     <div className="lesson-container">
       <div className="lesson-header">
-        <h2>2. الطول والميل (Length and Slope)</h2>
-        <p>الآن بعد أن عرفنا موقع النقطة، سنقيس المسافة بينها وبين نقطة الأصل (0,0)، ونحسب مدى انحدار الخط الواصل بينهما.</p>
+        <span className="lesson-kicker">السؤال المركزي</span>
+        <h2>2. كيف نقيس طريقًا مباشرًا واتجاهه؟</h2>
+        <p>الإحداثيان يخبراننا كم تحركنا أفقيًا وعموديًا، لكنهما لا يعطينا مباشرة طول الطريق المستقيم ولا شدة انحداره.</p>
       </div>
+
+      <section className="story-grid">
+        <article className="story-card"><span className="story-step">المشكلة</span><h3>خطوتان ليستا الطريق المباشر</h3><p>جمع الأفقي والعمودي يقيس مسارًا منكسرًا، لا الوتر.</p></article>
+        <article className="story-card"><span className="story-step">أداتان</span><h3>طول ونسبة</h3><p>فيثاغورس يقيس الوتر، ونسبة العمودي إلى الأفقي تصف الانحدار.</p></article>
+      </section>
 
       <div className="info-card">
         <strong>قاعدة فيثاغورس:</strong> المسافة (الطول) تشكل وتراً لمثلث قائم الزاوية ضلعية x و y. لذلك الطول = جذر(x² + y²).
@@ -92,6 +98,9 @@ const Lesson2 = () => {
         <strong>الميل (Slope):</strong> هو نسبة الارتفاع (y) إلى الامتداد الأفقي (x). الميل = y / x. وهو الذي سنسميه لاحقاً (tan).
       </div>
 
+      <section className="derivation-card"><span className="story-step">لماذا لا نجمع الضلعين؟</span><p>في المثلث 3-4-5، المسار الأفقي ثم العمودي طوله 7، أما الطريق المباشر فطوله 5. فيثاغورس يربط مساحات المربعات: <span dir="ltr">x² + y² = r²</span>، ومنه <span dir="ltr">r = √(x²+y²)</span>.</p><p>أما الميل فهو نسبة بلا وحدة إذا كانت الوحدتان متماثلتين: مقدار الارتفاع لكل وحدة أفقية.</p></section>
+
+      <aside className="thought-prompt"><strong>تنبّأ:</strong> عند تثبيت الأفقي ومضاعفة العمودي، أيهما يتغير أكثر: الطول أم الميل؟ حرّك النقطة واختبر.</aside>
       <div className="simulation-container">
         <h3>محاكاة تفاعلية: المثلث القائم خلف كل نقطة</h3>
         <p>اسحب النقطة ولاحظ كيف يتغير طول الوتر (المسافة) والميل.</p>
@@ -218,6 +227,7 @@ const Lesson2 = () => {
           </details>
         </div>
       </div>
+      <aside className="bridge-card"><strong>السؤال التالي:</strong> الميل يصف اتجاه خط، لكن كيف نسجل مقدار الدوران نفسه واتجاهه وعدد دوراته؟</aside>
     </div>
   );
 };

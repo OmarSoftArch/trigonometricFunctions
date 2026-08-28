@@ -238,3 +238,54 @@ p {
   pointer-events: none;
   transform: translate(10px, -20px);
 }
+
+.lesson-kicker, .story-step {
+  display: inline-block;
+  color: var(--warning-color);
+  font-size: .78rem;
+  font-weight: 800;
+  letter-spacing: .06em;
+  margin-bottom: .6rem;
+}
+
+.story-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.story-card, .derivation-card, .thought-prompt, .bridge-card {
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: var(--border-radius);
+  padding: 1.25rem;
+}
+
+.story-card { background: var(--panel-bg); }
+
+.thought-prompt { background: rgba(246,211,101,.08); border-right: 4px solid var(--warning-color); margin-bottom: 1.5rem; }
+.derivation-card { background: rgba(79,172,254,.08); margin: 1.5rem 0; }
+.bridge-card { background: rgba(0,242,254,.07); border-right: 4px solid var(--success-color); margin-top: 1.5rem; }
+.formula-line { direction: ltr; text-align: center; font-family: monospace; font-size: 1.05rem; padding: .8rem; margin: .8rem 0; background: rgba(0,0,0,.3); border-radius: 8px; }
+.lesson-svg { display: block; width: 100%; height: auto; max-height: 460px; }
+
+.ratio-table { display: grid; gap: .55rem; margin: 1rem 0; }
+.ratio-table div { display: flex; justify-content: space-between; gap: 1rem; padding: .6rem; background: rgba(0,0,0,.28); border-radius: 6px; }
+.observation { color: var(--warning-color); }
+.second-experiment { margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid rgba(255,255,255,.08); }
+.angle-buttons { display: flex; flex-wrap: wrap; gap: .6rem; margin: .8rem 0; }
+.angle-button { border: 1px solid var(--accent-color); color: var(--text-primary); background: transparent; padding: .5rem .9rem; border-radius: 8px; cursor: pointer; }
+.angle-button.active { background: var(--accent-color); }
+.undefined-value { color: var(--danger-color); border: 1px solid rgba(255,8,68,.55); }
+
+details summary { cursor: pointer; color: var(--warning-color); }
+
+@media (max-width: 820px) {
+  .app-container { display: block; }
+  .sidebar { width: 100%; max-height: 42vh; border-right: 0; }
+  .main-content { padding: 1rem; }
+  .lesson-header h2 { font-size: 1.8rem; }
+  .interactive-area { flex-direction: column; }
+  .canvas-wrapper, .controls-panel { width: 100%; }
+  .simulation-container, .quiz-section { padding: 1rem; }
+}

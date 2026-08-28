@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 
 const Lesson1 = () => {
   const [point, setPoint] = useState({ x: 3, y: 4 });
@@ -81,14 +81,22 @@ const Lesson1 = () => {
   return (
     <div className="lesson-container">
       <div className="lesson-header">
-        <h2>1. الإحداثيات والمستوى (Cartesian Plane)</h2>
-        <p>كل شيء في الهندسة التحليلية وحساب المثلثات يبدأ من هنا. المستوى الديكارتي هو لغة لوصف المكان بدقة باستخدام رقمين (x, y).</p>
+        <span className="lesson-kicker">السؤال المركزي</span>
+        <h2>1. كيف نصف مكانًا بحيث يستطيع شخص آخر العثور عليه؟</h2>
+        <p>قولنا «النقطة هناك» يعتمد على المتكلم والمنظور. نريد وصفًا قابلًا للتكرار: مرجع ثابت، واتجاهان، وعددان يحددان الموقع.</p>
       </div>
+
+      <section className="story-grid">
+        <article className="story-card"><span className="story-step">المشكلة</span><h3>الوصف اللفظي غامض</h3><p>«قريب من الباب» يتغير بتغير الباب والمتكلم.</p></article>
+        <article className="story-card"><span className="story-step">ما نحتاجه</span><h3>مرجع مشترك</h3><p>نختار أصلًا واتجاهين مستقلين، ثم نقيس الإزاحة عنهما.</p></article>
+        <article className="story-card"><span className="story-step">الفكرة</span><h3>رقمان لمكان واحد</h3><p>الأول حركة أفقية، والثاني حركة عمودية، وترتيبهما جزء من المعنى.</p></article>
+      </section>
 
       <div className="info-card">
         <strong>الفكرة الأساسية:</strong> المحور الأفقي يسمى <strong>x</strong> ويمثل الحركة يميناً ويساراً. المحور العمودي يسمى <strong>y</strong> ويمثل الحركة للأعلى والأسفل.
       </div>
 
+      <aside className="thought-prompt"><strong>تنبّأ:</strong> هل تصف الإحداثيات المكان نفسه إذا نقلنا نقطة الأصل؟ جرّب أولًا تحريك النقطة وافصل بين «المكان» و«وصف المكان».</aside>
       <div className="simulation-container">
         <h3>محاكاة تفاعلية: حرّك النقطة واستكشف</h3>
         <p>اسحب النقطة الزرقاء ولاحظ كيف تتغير قيم x و y.</p>
@@ -218,6 +226,7 @@ const Lesson1 = () => {
           </details>
         </div>
       </div>
+      <aside className="bridge-card"><strong>السؤال التالي:</strong> عرفنا أين تقع النقطة، لكن كيف نقيس الطريق المباشر إليها، وكيف نصف اتجاه هذا الطريق؟</aside>
     </div>
   );
 };

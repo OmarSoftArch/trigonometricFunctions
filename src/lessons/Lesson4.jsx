@@ -1,247 +1,87 @@
-import React, { useState } from 'react';
+import { useState } from 'react'
 
-const Lesson4 = () => {
-  const [angleDeg, setAngleDeg] = useState(60);
+const angleChoices = [25, 35, 50]
 
-  const pixelSize = 400;
-  const originX = pixelSize / 2;
-  const originY = pixelSize / 2;
-  const radiusVisual = 150; // Visual radius for the unit circle (1 unit = 150px)
-
-  // Math calculations
-  const angleRad = (angleDeg * Math.PI) / 180;
-  
-  // In the unit circle, r = 1, so x = cos(theta), y = sin(theta)
-  const cosValue = Math.cos(angleRad);
-  const sinValue = Math.sin(angleRad);
-
-  // Pixel coordinates for the point
-  const pointPixelX = originX + cosValue * radiusVisual;
-  const pointPixelY = originY - sinValue * radiusVisual; // Invert Y for SVG
-
-  // Generate grid lines
-  const gridLines = [];
-  const gridCount = 4; // -2 to 2 with 0.5 steps
-  const stepSize = radiusVisual / 2; // 0.5 units
-
-  for (let i = -gridCount; i <= gridCount; i++) {
-    gridLines.push(
-      <g key={`grid-${i}`}>
-        <line
-          x1={originX + i * stepSize}
-          y1={0}
-          x2={originX + i * stepSize}
-          y2={pixelSize}
-          stroke={i === 0 ? "rgba(255,255,255,0.4)" : "rgba(255,255,255,0.1)"}
-          strokeWidth={i === 0 ? 2 : 1}
-        />
-        <line
-          x1={0}
-          y1={originY + i * stepSize}
-          x2={pixelSize}
-          y2={originY + i * stepSize}
-          stroke={i === 0 ? "rgba(255,255,255,0.4)" : "rgba(255,255,255,0.1)"}
-          strokeWidth={i === 0 ? 2 : 1}
-        />
-        
-        {/* Axis Labels */}
-        {i !== 0 && i % 2 === 0 && (
-          <>
-            <text x={originX + i * stepSize + 5} y={originY + 15} fill="rgba(255,255,255,0.5)" fontSize="12">
-              {i / 2}
-            </text>
-            <text x={originX - 25} y={originY - i * stepSize + 4} fill="rgba(255,255,255,0.5)" fontSize="12">
-              {i / 2}
-            </text>
-          </>
-        )}
-      </g>
-    );
-  }
+function Lesson4() {
+  const [scaleFactor, setScaleFactor] = useState(1.8)
+  const [angleDeg, setAngleDeg] = useState(35)
+  const angleRad = angleDeg * Math.PI / 180
+  const smallHypotenuse = 3
+  const largeHypotenuse = smallHypotenuse * scaleFactor
+  const smallAdjacent = smallHypotenuse * Math.cos(angleRad)
+  const smallOpposite = smallHypotenuse * Math.sin(angleRad)
+  const largeAdjacent = largeHypotenuse * Math.cos(angleRad)
+  const largeOpposite = largeHypotenuse * Math.sin(angleRad)
+  const pixelScale = 48
+  const originX = 55
+  const originY = 315
+  const toX = (value) => originX + value * pixelScale
+  const toY = (value) => originY - value * pixelScale
+  const points = (adjacent, opposite) => [originX + ',' + originY, toX(adjacent) + ',' + originY, toX(adjacent) + ',' + toY(opposite)].join(' ')
 
   return (
-    <div className="lesson-container">
-      <div className="lesson-header">
-        <h2>4. الدائرة الوحدة (Unit Circle)</h2>
-        <p>مرحباً بك في أهم مفهوم في حساب المثلثات! الدائرة الوحدة هي دائرة نصف قطرها يساوي <strong>1</strong> ومركزها نقطة الأصل. هذه الدائرة تحول الزوايا إلى إحداثيات يمكن قياسها.</p>
-      </div>
-
-      <div className="info-card">
-        <strong>السر العظيم:</strong> لأن الوتر (نصف القطر) يساوي 1، فإن:
-        <ul>
-          <li><strong>الإسقاط الأفقي (x)</strong> هو مباشرة <strong>cos(θ)</strong>.</li>
-          <li><strong>الإسقاط العمودي (y)</strong> هو مباشرة <strong>sin(θ)</strong>.</li>
-        </ul>
-        أي نقطة على الدائرة الوحدة تمتلك الإحداثيات <code>(cos θ, sin θ)</code>.
-      </div>
-
-      <div className="simulation-container">
-        <h3>محاكاة تفاعلية: صانعة الـ Sin والـ Cos</h3>
-        <p>غيّر الزاوية ولاحظ كيف يعبر الإسقاط الأفقي عن الكوساين (cos)، والإسقاط العمودي عن الساين (sin).</p>
-        
-        <div className="interactive-area">
-          <div className="canvas-wrapper" style={{ cursor: 'default' }}>
-            <svg width={pixelSize} height={pixelSize}>
-              <rect width={pixelSize} height={pixelSize} fill="#12141c" />
-              {gridLines}
-
-              {/* The Unit Circle */}
-              <circle
-                cx={originX}
-                cy={originY}
-                r={radiusVisual}
-                fill="none"
-                stroke="rgba(255,255,255,0.2)"
-                strokeWidth="2"
-              />
-
-              {/* Projection lines (dashed) */}
-              {/* Vertical projection to X-axis (shows x / cos) */}
-              <line 
-                x1={pointPixelX} 
-                y1={originY} 
-                x2={pointPixelX} 
-                y2={pointPixelY} 
-                stroke="var(--success-color)" 
-                strokeWidth="2" 
-                strokeDasharray="4"
-              />
-              {/* Horizontal projection to Y-axis (shows y / sin) */}
-              <line 
-                x1={originX} 
-                y1={pointPixelY} 
-                x2={pointPixelX} 
-                y2={pointPixelY} 
-                stroke="var(--accent-color)" 
-                strokeWidth="2" 
-                strokeDasharray="4"
-              />
-
-              {/* Solid lines highlighting the values on the axes */}
-              <line 
-                x1={originX} 
-                y1={originY} 
-                x2={pointPixelX} 
-                y2={originY} 
-                stroke="var(--accent-color)" 
-                strokeWidth="4" 
-              />
-              <line 
-                x1={originX} 
-                y1={originY} 
-                x2={originX} 
-                y2={pointPixelY} 
-                stroke="var(--success-color)" 
-                strokeWidth="4" 
-              />
-
-              {/* Rotating Ray */}
-              <line 
-                x1={originX} 
-                y1={originY} 
-                x2={pointPixelX} 
-                y2={pointPixelY} 
-                stroke="#fff" 
-                strokeWidth="2" 
-              />
-
-              {/* Ray Endpoint */}
-              <circle
-                cx={pointPixelX}
-                cy={pointPixelY}
-                r={6}
-                fill="#fff"
-              />
-              
-              {/* Origin Point */}
-              <circle
-                cx={originX}
-                cy={originY}
-                r={4}
-                fill="white"
-              />
+    <div className='lesson-container'>
+      <header className='lesson-header'>
+        <span className='lesson-kicker'>السؤال المركزي</span>
+        <h2>4. كيف نصف اتجاهًا لا يتغير عندما يتغير الحجم؟</h2>
+        <p>قد يختلف سلّمان في الطول لكنهما يميلان بالاتجاه نفسه. الأطوال وحدها لا تحفظ هذا المعنى؛ نحتاج عددًا يبقى ثابتًا حين نكبّر الشكل أو نصغّره.</p>
+      </header>
+      <section className='story-grid' aria-label='من المشكلة إلى الفكرة'>
+        <article className='story-card'><span className='story-step'>المشكلة</span><h3>الحجم يتغير والاتجاه لا</h3><p>إذا ضاعفنا كل الأضلاع، كبر المثلث لكن شعاعه لم يَدُر.</p></article>
+        <article className='story-card'><span className='story-step'>محاولة لا تكفي</span><h3>قياس ضلع واحد</h3><p>الارتفاع وحده لا يحدد الانحدار؛ نحتاج مقارنته بالأفقي.</p></article>
+        <article className='story-card'><span className='story-step'>الفكرة الجديدة</span><h3>قارن بدل أن تعدّ</h3><p>النسبة بين طولين تزيل أثر التكبير وتحفظ هيئة المثلث.</p></article>
+      </section>
+      <aside className='thought-prompt'><strong>تنبّأ:</strong> إذا تضاعف المثلث، فهل تتضاعف «العمودي ÷ الوتر» أم تبقى كما هي؟</aside>
+      <section className='simulation-container'>
+        <h3>المختبر: مثلثان، زاوية واحدة</h3>
+        <p>غيّر الحجم وراقب الأطوال والنِّسب معًا. الأزرق للصغير، والأصفر للمكبّر.</p>
+        <div className='interactive-area'>
+          <div className='canvas-wrapper' style={{ cursor: 'default' }}>
+            <svg viewBox='0 0 460 350' className='lesson-svg' role='img' aria-label={'مثلثان قائمان بزاوية ' + angleDeg + ' درجة'}>
+              <rect width='460' height='350' fill='#12141c' />
+              <line x1='30' y1={originY} x2='430' y2={originY} stroke='rgba(255,255,255,.25)' />
+              <polygon points={points(largeAdjacent, largeOpposite)} fill='rgba(246,211,101,.08)' stroke='var(--warning-color)' strokeWidth='3' />
+              <polygon points={points(smallAdjacent, smallOpposite)} fill='rgba(79,172,254,.18)' stroke='var(--accent-color)' strokeWidth='3' />
+              <circle cx={originX} cy={originY} r='5' fill='white' />
             </svg>
           </div>
-
-          <div className="controls-panel">
-            <h3>القيم المثلثية</h3>
-            
-            <div className="control-group">
-              <label>الزاوية (θ): {angleDeg}°</label>
-              <input
-                type="range"
-                className="slider"
-                min="0"
-                max="360"
-                step="1"
-                value={angleDeg}
-                onChange={(e) => setAngleDeg(Number(e.target.value))}
-              />
+          <div className='controls-panel'>
+            <h3>غيّر الحجم</h3>
+            <div className='control-group'>
+              <label htmlFor='scale-factor'>عامل التكبير: ×{scaleFactor.toFixed(1)}</label>
+              <input id='scale-factor' type='range' className='slider' min='1.2' max='2.6' step='0.1' value={scaleFactor} onChange={(event) => setScaleFactor(Number(event.target.value))} />
             </div>
-
-            <div className="control-group">
-              <label>الإسقاط الأفقي (x)</label>
-              <div className="value-display" style={{color: 'var(--accent-color)'}}>
-                cos({angleDeg}°) = {cosValue.toFixed(3)}
-              </div>
+            <div className='ratio-table' dir='ltr'>
+              <div><span>small x/r</span><strong>{smallAdjacent.toFixed(2)} / 3 = {(smallAdjacent / smallHypotenuse).toFixed(3)}</strong></div>
+              <div><span>large x/r</span><strong>{largeAdjacent.toFixed(2)} / {largeHypotenuse.toFixed(2)} = {(largeAdjacent / largeHypotenuse).toFixed(3)}</strong></div>
+              <div><span>small y/r</span><strong>{smallOpposite.toFixed(2)} / 3 = {(smallOpposite / smallHypotenuse).toFixed(3)}</strong></div>
+              <div><span>large y/r</span><strong>{largeOpposite.toFixed(2)} / {largeHypotenuse.toFixed(2)} = {(largeOpposite / largeHypotenuse).toFixed(3)}</strong></div>
             </div>
-
-            <div className="control-group">
-              <label>الإسقاط العمودي (y)</label>
-              <div className="value-display" style={{color: 'var(--success-color)'}}>
-                sin({angleDeg}°) = {sinValue.toFixed(3)}
-              </div>
-            </div>
-
-            <div className="control-group">
-              <label>إحداثيات النقطة:</label>
-              <p style={{fontFamily: 'monospace', fontSize: '1.2rem', marginTop: '0.5rem'}} dir="ltr">
-                ({cosValue.toFixed(2)}, {sinValue.toFixed(2)})
-              </p>
-            </div>
+            <p className='observation'>تغيرت الأطوال، لكن النسبتين لم تتغيرا.</p>
           </div>
         </div>
-      </div>
-
-      <div className="quiz-section">
-        <h3>اختبر فهمك</h3>
-        
-        <div className="question">
-          <h4>سؤال الفهم</h4>
-          <p>لماذا اختار علماء الرياضيات دائرة نصف قطرها 1 (دائرة الوحدة) وليس أي رقم آخر؟</p>
-          <details>
-            <summary>أظهر الإجابة</summary>
-            <p style={{marginTop: '0.5rem', color: 'var(--success-color)'}}>
-              لتسهيل الحسابات! الدالة sin هي (المقابل / الوتر). وبما أن الوتر (نصف القطر) هو 1، فإن القسمة على 1 لا تغير شيئاً، فيصبح sin هو المقابل (y) مباشرة. والشيء نفسه ينطبق على cos مع (x).
-            </p>
-          </details>
+        <div className='second-experiment'>
+          <strong>غيّر الزاوية بعد اختبار الحجم:</strong>
+          <div className='angle-buttons'>{angleChoices.map((angle) => <button key={angle} type='button' className={angleDeg === angle ? 'angle-button active' : 'angle-button'} onClick={() => setAngleDeg(angle)}>{angle}°</button>)}</div>
+          <p>الحجم لا يغيّر النسبة، لكن الزاوية تغيّرها. إذن النسبة تحمل معلومة عن الزاوية نفسها.</p>
         </div>
-
-        <div className="question">
-          <h4>سؤال الحساب</h4>
-          <p>عند الزاوية 90°، كم يتوقع أن تكون قيمة x (أو cos) وقيمة y (أو sin) بالنظر للمحاكاة؟</p>
-          <details>
-            <summary>أظهر الإجابة</summary>
-            <p style={{marginTop: '0.5rem', color: 'var(--success-color)'}}>
-              عند 90°، الشعاع يكون عمودياً للأعلى تماماً. قيمته على المحور الأفقي x هي 0، وقيمته على المحور العمودي y تصل لأقصاها وهي 1.
-              إذن: cos(90°) = 0، و sin(90°) = 1.
-            </p>
-          </details>
-        </div>
-
-        <div className="question">
-          <h4>سؤال تطبيق واقعي</h4>
-          <p>إذا كنت تبرمج ذراع روبوت طولها متر واحد وتريدها أن تدور بزاوية θ لتلتقط شيئاً، كيف تحدد إحداثيات (x, y) لمكان يد الروبوت؟</p>
-          <details>
-            <summary>أظهر الإجابة</summary>
-            <p style={{marginTop: '0.5rem', color: 'var(--success-color)'}}>
-              ستستخدم الدائرة الوحدة مباشرة! إحداثيات اليد ستكون x = cos(θ) و y = sin(θ).
-            </p>
-          </details>
-        </div>
-      </div>
+      </section>
+      <section className='derivation-card'>
+        <span className='story-step'>لماذا يحدث ذلك؟</span>
+        <h3>التشابه هو البرهان، لا الرسم</h3>
+        <p>للمثلثين زاوية قائمة والزاوية الأخرى نفسها؛ لذلك هما متشابهان، وكل ضلع في الكبير يساوي نظيره مضروبًا في عامل واحد k.</p>
+        <div className='formula-line' dir='ltr'>(k · opposite) / (k · hypotenuse) = opposite / hypotenuse</div>
+        <p>يلغى عامل التكبير من النسبة. هذه هي العلة الرياضية لثباتها.</p>
+      </section>
+      <section className='quiz-section'>
+        <h3>هل تستطيع إعادة بناء الفكرة؟</h3>
+        <div className='question'><h4>فسّر، لا تحسب</h4><p>لماذا لا يكفي ارتفاع منحدر وحده لوصف شدته؟</p><details><summary>قارن تفسيرك</summary><p>لأن الارتفاع نفسه قد يحدث خلال امتداد أفقي قصير أو طويل؛ النسبة هي التي تحفظ الهيئة.</p></details></div>
+        <div className='question'><h4>أعد الاشتقاق</h4><p>لماذا تصف 3/5 و6/10 الاتجاه نفسه؟</p><details><summary>قارن استدلالك</summary><p>كل طول تضاعف بالعامل نفسه، ثم أُلغي العامل عند القسمة، فبقيت النسبة.</p></details></div>
+        <div className='question'><h4>متى تفشل الحجة؟</h4><p>ماذا يحدث إن ضاعفنا الارتفاع وحده؟</p><details><summary>قارن تفسيرك</summary><p>يتغير الشكل والزاوية؛ لأن الأضلاع لم تتغير بالعامل نفسه.</p></details></div>
+      </section>
+      <aside className='bridge-card'><strong>السؤال التالي:</strong> إذا كانت النِّسب ثابتة، فهل يجعل وتر طوله 1 هذه النسب إحداثيات مباشرة؟ هذا ما ستبنيه دائرة الوحدة.</aside>
     </div>
-  );
-};
+  )
+}
 
-export default Lesson4;
+export default Lesson4
